@@ -12,11 +12,11 @@
 
 <script>
 
-	window.onload = function(){
+/* 	window.onload = function(){
 
 		if('${msg}' !=  "")
 			alert('${msg}')
-	}
+	} */
 	function isNull(obj ,str){
 		if(obj.value ==""){
 			alert(str)
@@ -53,7 +53,7 @@
 			<h2>로그인</h2>
 			<hr>
 			<br>
-			<form name="loginForm" method="post" onsubmit="return checkForm()">
+			<form method="post" onsubmit="return checkForm()">
 				<table>
 					<tr>
 						<th>ID</th>

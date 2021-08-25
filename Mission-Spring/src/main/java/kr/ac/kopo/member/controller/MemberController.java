@@ -13,7 +13,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import kr.ac.kopo.member.service.MemberService;
 import kr.ac.kopo.member.vo.MemberVO;
 
-@SessionAttributes("userVO")
+@SessionAttributes({ "userVO" }) //이 어노테이션만 있으면, 리퀘스트가 아니라 세션에 올라가 
 @Controller
 public class MemberController {
 	
@@ -21,10 +21,40 @@ public class MemberController {
 	private MemberService service;
 	
 	@GetMapping("/login")
-	public String loginForm() {
-		
-		return "login/login";	
+	public String loginForm() {		
+		return "login/login";
 	}
+	
+//	@PostMapping("/login")
+//	public String login(MemberVO member, Model model, HttpSession session) { //스프링에서는 그냥 세션객체 요구하면 그냥 줌.
+//		
+//		MemberVO userVO = service.login(member);
+//		
+//		String msg = "";
+//		String view = "";
+//		if(userVO == null) {
+//			msg = "아이디 또는 패스워드가 잘못되었습니다.";
+//			view = "login/login";
+//			model.addAttribute("msg", msg);
+//		} else {
+//			//세션등록 새방법(세션등록마저 디스패처한테 짬 때릴래, 위에 어노테이션 붙이면 됨.)
+//			model.addAttribute("userVO", userVO);
+//			msg = "환영합니다. " + userVO.getName() + "님";
+//			session.setAttribute("msg", msg);
+//			
+//			//이제 로그인 후에 그냥 가면 안되고 직전 페이지로 가게함.
+//			String dest = (String)session.getAttribute("dest");
+//			System.out.println("dest : "  + dest);
+//			if(dest != null) {
+//				session.removeAttribute("dest");
+//				view = "redirect:" + dest;
+//			} else {
+//				view = "redirect:/";				
+//			}
+//		}
+//		System.out.println("view : " +  view);
+//		return view;
+//	}
 	
 	@PostMapping("/login")
 	public String login(MemberVO member , Model model , HttpSession session){
@@ -51,15 +81,24 @@ public class MemberController {
 		
 		return "redirect:/";		
 	}
-	
-	
+
 	@GetMapping("/logout")
-	public String logout(/* HttpSession session */ SessionStatus sessionStatus) {
-		//session.invalidate();		
-		System.out.println(sessionStatus.isComplete());
+	public String logout(SessionStatus sessionStatus) {
+		
+		System.out.println("세션삭제 전: " + sessionStatus.isComplete());
 		sessionStatus.setComplete();
-		System.out.println(sessionStatus.isComplete());
+		System.out.println("세션삭제 후: " + sessionStatus.isComplete());
+		
 		return "redirect:/";
 	}
+	
+//	@GetMapping("/logout")
+//	public String logout(HttpSession session) {
+//		
+//		//세션어트리뷰트(어노)를 사용한 이상 내가 여기서 session을 직접 조작할 수 없어.
+//		session.invalidate();
+//		
+//		return "redirect:/";
+//	}
 	
 }

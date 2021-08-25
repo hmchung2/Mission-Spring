@@ -11,6 +11,7 @@
 	<hr>
 		empty userVO  : ${empty userVO } <br>
 		userVO : ${sessionScope.userVO } <br>
+		${sessionScope.dest }
 	<hr>
 
 	<h1>hello</h1>
